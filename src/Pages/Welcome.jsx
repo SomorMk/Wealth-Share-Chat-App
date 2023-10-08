@@ -1,8 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 import logo from '/logo.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { Comment } from  'react-loader-spinner';
 
 const Welcome = () => {
+
+  let navigate = useNavigate()
+  let [loader, setLoader] = useState(false)
+
+  let loginBtn = ()=>{
+    setLoader(true)
+    setTimeout(()=>{
+      navigate('/login')
+    },500)
+  }
+
+  let signBtn = ()=>{
+    setLoader(true)
+    setTimeout(()=>{
+      navigate('/signin')
+    },500)
+  }
+
+
   return (
     <>
         <section className='w-full h-[100vh] bg-b2 px-5 md:px-0'>
@@ -14,11 +34,23 @@ const Welcome = () => {
                     <div className='text-center'>
                       <h1 className='text-w text-2xl md:text-[40px] font-semibold font-ral'>Welcome to Celebrity Wealth Share!</h1>
                       <p className='text-w text-xs md:text-lg font-ral mt-5'>Elevate Your Favourites, Multiply Your Wealth with Celebrity Wealth Share!</p>
-                      <Link to={`/login`} className='py-3 md:py-4 px-20 bg-pri text-base md:text-lg text-w font-bold font-ral inline-block rounded-xl mt-10 transition-all duration-500 hover:scale-[.96] hover:bg-w hover:text-pri'>Login</Link>
-                      <p className='text-pri text-xs md:text-lg font-ral mt-5'>New Here? <Link to={`/signin`} className='text-w transition-all hover:underline'>Sign In</Link></p>
+                      <Link onClick={loginBtn} className='py-3 md:py-4 px-20 bg-pri text-base md:text-lg text-w font-bold font-ral inline-block rounded-xl mt-10 transition-all duration-500 hover:scale-[.96] hover:bg-w hover:text-pri'>Login</Link>
+                      <p className='text-pri text-xs md:text-lg font-ral mt-5'>New Here? 
+                      <Link onClick={signBtn} className='text-w transition-all hover:underline'> Sign In</Link></p>
                     </div>
                 </div>
             </div>
+
+            <Comment
+            visible={ loader ? true : false}
+            height="120"
+            width="120"
+            ariaLabel="comment-loading"
+            wrapperStyle={{}}
+            color="#fff"
+            backgroundColor="#2394C8"
+            wrapperClass="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+            />
         </section>
     </>
   )
