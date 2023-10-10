@@ -34,23 +34,25 @@ const Welcome = () => {
                     <div className='text-center'>
                       <h1 className='text-w text-2xl md:text-[40px] font-semibold font-ral'>Welcome to Celebrity Wealth Share!</h1>
                       <p className='text-w text-xs md:text-lg font-ral mt-5'>Elevate Your Favourites, Multiply Your Wealth with Celebrity Wealth Share!</p>
-                      <Link onClick={loginBtn} className='py-3 md:py-4 px-20 bg-pri text-base md:text-lg text-w font-bold font-ral inline-block rounded-xl mt-10 transition-all duration-500 hover:scale-[.96] hover:bg-w hover:text-pri'>Login</Link>
+                      <button onClick={loginBtn} className='py-3 md:py-4 px-20 bg-pri text-base md:text-lg text-w font-bold font-ral inline-block rounded-xl mt-10 transition-all duration-500 hover:scale-[.96] hover:bg-w hover:text-pri'>Login</button>
                       <p className='text-pri text-xs md:text-lg font-ral mt-5'>New Here? 
-                      <Link onClick={signBtn} className='text-w transition-all hover:underline'> Sign In</Link></p>
+                      <button onClick={signBtn} className='text-w transition-all hover:underline ml-1'> Sign In</button></p>
                     </div>
                 </div>
             </div>
 
-            <Comment
-            visible={ loader ? true : false}
-            height="120"
-            width="120"
-            ariaLabel="comment-loading"
-            wrapperStyle={{}}
-            color="#fff"
-            backgroundColor="#2394C8"
-            wrapperClass="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
-            />
+            <div className={`${loader == true? 'block' : 'hidden'} absolute top-0 left-0 w-full h-full bg-[#2394C8EB]`}>
+                <Comment
+                visible={ loader ? true : false}
+                height="120"
+                width="120"
+                ariaLabel="comment-loading"
+                wrapperStyle={{}}
+                color="#2394C8"
+                backgroundColor="#fff"
+                wrapperClass="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+                />
+            </div>
         </section>
     </>
   )

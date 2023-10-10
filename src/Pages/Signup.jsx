@@ -2,14 +2,19 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from "/logo.png";
 import googleLogo from '../assets/Images/google-logo.png'
+import facebookLogo from '../assets/Images/facebook.png'
 import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { getAuth, createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, FacebookAuthProvider } from "firebase/auth";
 import { ToastContainer, toast } from 'react-toastify';
 import { Comment } from  'react-loader-spinner';
+import TitleHeader from '../assets/Components/TitleHeader';
 
 const Signup = () => {
 
   const auth = getAuth();
+  const googleProvider = new GoogleAuthProvider();
+  const facebookProvider = new FacebookAuthProvider()
+
   let navigate = useNavigate()
 
   let [loader, setLoader] = useState(false)
@@ -108,6 +113,50 @@ const Signup = () => {
 
   }
 
+  let googleClick = ()=>{
+    setLoader(true)
+    setTimeout((()=>{
+      setLoader(false)
+      signInWithPopup(auth, googleProvider)
+      .then(() => {
+        toast.success('Login Successful! Rederecting to Home Page!')
+        setLoader(true)
+        setTimeout((()=>{
+          navigate('/success')
+        }),2000)
+        console.log('Successfull');
+      }).catch((error) => {
+        setLoader(false)
+        const errorCode = error.code;
+        console.log(errorCode);
+        toast.error('Something Went Wrong! Try Again')
+      });
+    }),1500)
+  }
+
+  let facebookClick = ()=>{
+    setLoader(true)
+    setTimeout(()=>{
+      setLoader(false)
+      signInWithPopup(auth, facebookProvider)
+      .then(() => {
+        toast.success('Login Successful! Rederecting to Home Page!')
+        setLoader(true)
+        setTimeout((()=>{
+          navigate('/success')
+        }),2000)
+      })
+      .catch((error) => {
+        setLoader(false)
+        const errorCode = error.code;
+        console.log(errorCode);
+        if(errorCode.includes('auth/account-exists-with-different-credential')){
+          toast.warning(`This Facebook account's mail is already used!`);
+        }
+      });
+    },1500)
+  }
+
   let backPage = ()=>{
     setLoader(true)
     setTimeout(()=>{
@@ -125,10 +174,7 @@ const Signup = () => {
     <>
       <section className='w-full h-[100vh] bg-b2 flex flex-wrap justify-between items-center relative pt-[50px] md:pt-[100px]'>
 
-        <div className='w-full h-[70px] md:h-[100px] absolute top-0 left-0 border-b-2 border-pri'>
-          <Link onClick={backPage} className='absolute top-[50%] left-[10%] translate-y-[-50%]'><i className="text-w text-base md:text-xl fa-solid fa-chevron-left"></i></Link>
-          <h5 className='text-w text-base md:text-xl font-semibold font-ral text-center leading-[70px] md:leading-[100px]'>Signup</h5>
-        </div>
+        <TitleHeader title='Signup'></TitleHeader>
 
         <div className="max-w-container w-full mx-auto flex flex-wrap justify-between items-center">
 
@@ -158,21 +204,29 @@ const Signup = () => {
                 <span className='absolute top-0 right-0 text-xs text-red-500 font-bold font-ral underline'>{passwordErr}</span>
               </div>
               
-              <Link onClick={signClick} className='py-3 px-20 bg-pri text-base md:text-lg text-w font-bold font-ral block rounded-xl text-center transition-all duration-500 hover:scale-[.96] hover:bg-w hover:text-pri'>Sign Up</Link>
+              <button onClick={signClick} className='w-full py-3 px-20 bg-pri text-base md:text-lg text-w font-bold font-ral block rounded-xl text-center transition-all duration-500 hover:scale-[.96] hover:bg-w hover:text-pri'>Sign Up</button>
 
-              <Link onClick={loginPageBtn} className='text-w text-xs md:text-sm font-medium font-ral text-right block mt-5 hover:underline'>Already have account? Login</Link>
+              <div className='w-full text-center'>
+                <button onClick={loginPageBtn} className='text-w text-xs md:text-sm font-medium font-ral inline-block mt-5 hover:underline'>Already have account? Login</button>
+              </div>
 
             </div>
           </div>
 
           <div className='w-full md:w-5/12 flex flex-row md:flex-col justify-evenly md:justify-center items-center order-1 md:order-2'>
-            <img src={logo} alt="LOGO" className='max-w-[30%] md:max-w-[90%]' />
+            <img src={logo} alt="LOGO" className='max-w-[30%] md:max-w-[90%] hidden md:block' />
             <div className='mt-5 text-center flex flex-col justify-center items-center'>
               <p className='text-w text-[10px] md:text-lg font-semibold font-ral mb-2 md:mb-5'>You can also Login with</p>
-              <button className='py-2 px-3 max-w-fit bg-w rounded-lg flex items-center group hover:scale-[0.90] transition-all duration-500'>
-                <img src={googleLogo} alt="Google Logo" className='w-[10px] h-[10px]' />
-                <p className='text-b text-xs md:text-base font-semibold font-ral ml-3'>Google</p>
-              </button>
+              <div className='flex gap-2'>
+                <button onClick={googleClick} className='py-2 px-3 max-w-fit bg-w rounded-lg flex items-center group hover:scale-[0.90] transition-all duration-500'>
+                  <img src={googleLogo} alt="Google Logo" className='w-[10px] h-[10px]' />
+                  <p className='text-b text-xs md:text-base font-semibold font-ral ml-3'>Google</p>
+                </button>
+                <button onClick={facebookClick} className='py-2 px-3 max-w-fit bg-w rounded-lg flex items-center group hover:scale-[0.90] transition-all duration-500'>
+                  <img src={facebookLogo} alt="Google Logo" className='w-[10px] h-[10px]' />
+                  <p className='text-b text-xs md:text-base font-semibold font-ral ml-3'>Facebook</p>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -189,16 +243,19 @@ const Signup = () => {
         draggable={false}
         theme="light"
         />
-        <Comment
-        visible={ loader ? true : false}
-        height="120"
-        width="120"
-        ariaLabel="comment-loading"
-        wrapperStyle={{}}
-        color="#000"
-        backgroundColor="#fff"
-        wrapperClass="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
-        />
+        
+        <div className={`${loader == true? 'block' : 'hidden'} absolute top-0 left-0 w-full h-full bg-[#2394C8EB] z-[9]`}>
+          <Comment
+          visible={ loader ? true : false}
+          height="120"
+          width="120"
+          ariaLabel="comment-loading"
+          wrapperStyle={{}}
+          color="#2394C8"
+          backgroundColor="#fff"
+          wrapperClass="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+          />
+        </div>
       </section>
     </>
   )

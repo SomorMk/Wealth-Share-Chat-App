@@ -17,7 +17,10 @@ export default {
       },
       fontFamily: {
         'ral': ['Raleway', 'sans-serif']
-      }
+      },
+      screens: {
+        'xxs': '300px',
+      },
     },
   },
   plugins: [],

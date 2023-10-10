@@ -9,6 +9,7 @@ import Login from './Pages/Login.jsx';
 import Signup from './Pages/Signup.jsx';
 import Upcomming from './Pages/Upcomming';
 import Success from './Pages/Success';
+import ForgetPassword from './Pages/ForgetPassword';
 
 
 const router = createBrowserRouter([
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "/signin",
     element: <Signup></Signup>,
+  },
+  {
+    path: "/forget-password",
+    element: <ForgetPassword></ForgetPassword>,
   },
   {
     path: "/upcomming",

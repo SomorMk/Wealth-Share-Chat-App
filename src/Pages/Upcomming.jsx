@@ -24,16 +24,18 @@ const Upcomming = () => {
             <Link onClick={homePage} className='mt-10 py-3 px-20 bg-pri text-base md:text-lg text-w font-bold font-ral block rounded-xl text-center transition-all duration-500 hover:scale-[.96] hover:bg-w hover:text-pri'>Go to Home Page</Link>
 
 
-            <Comment
-            visible={ loader ? true : false}
-            height="120"
-            width="120"
-            ariaLabel="comment-loading"
-            wrapperStyle={{}}
-            color="#000"
-            backgroundColor="#fff"
-            wrapperClass="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
-            />
+          <div className={`${loader == true? 'block' : 'hidden'} absolute top-0 left-0 w-full h-full bg-[#2394C8EB]`}>
+              <Comment
+              visible={ loader ? true : false}
+              height="120"
+              width="120"
+              ariaLabel="comment-loading"
+              wrapperStyle={{}}
+              color="#2394C8"
+              backgroundColor="#fff"
+              wrapperClass="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%]"
+              />
+          </div>
         </section>
     </>
   )
